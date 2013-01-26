@@ -151,6 +151,30 @@ if __name__ == '__main__':
 
   print "Loaded %d words in %.02fs" % (n, elapsed)
 
-  qcmd = QuarrelCmd()
-  qcmd.prompt = "> "
-  qcmd.cmdloop()
+  if len(sys.argv) > 2:
+    total = 0
+    nwords = 0
+
+    start = time.time()
+    f = open(sys.argv[2])
+
+    for l in f.xreadlines():
+      toks = l.split()
+      w = toks[0]
+      n = int(toks[1])
+
+      (score, words) = t.search(w, n)
+      total += score
+      nwords += 1
+
+    f.close()
+    end = time.time()
+    elapsed = end-start
+
+    print "Solved %d words in %.02fs" % (nwords, elapsed)
+
+    print total
+  else:
+    qcmd = QuarrelCmd()
+    qcmd.prompt = "> "
+    qcmd.cmdloop()
